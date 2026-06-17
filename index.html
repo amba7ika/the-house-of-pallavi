@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The House of Pallavi</title>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#FAF7F0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Almanac"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Ballet&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --cream:#FAF7F0;
+  --cream2:#F3EEE3;
+  --cream3:#EBE4D4;
+  --sage:#8BA888;
+  --sage-light:#C5D9C3;
+  --sage-dark:#5A7A58;
+  --blue:#7B9BB5;
+  --blue-light:#C0D4E4;
+  --blue-dark:#4A6E8A;
+  --yellow:#D4A843;
+  --yellow-light:#F0DFA0;
+  --yellow-dark:#8C6A1A;
+  --rose:#C97A72;
+  --rose-light:#ECC4C0;
+  --rose-dark:#8A3F38;
+  --lavender:#9B8EC4;
+  --lavender-light:#D4CEEC;
+  --lavender-dark:#5A4E8A;
+  --amber:#C4853A;
+  --amber-light:#EDD5A8;
+  --ink:#2C2420;
+  --ink2:#5C4E44;
+  --ink3:#8C7E74;
+  --border:#DDD5C4;
+  --border2:#C8BBA8;
+  --shadow:rgba(44,36,32,0.06);
+  --radius:16px;
+  --radius-sm:10px;
+  --radius-lg:24px;
+}
+
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* TEXTURE OVERLAY */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* LAYOUT */
+.app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 1.5rem 4rem}
+
+/* HEADER */
+.site-header{
+  text-align:center;padding:2.5rem 0 1.5rem;
+  border-bottom:1px solid var(--border);margin-bottom:2rem;
+  position:relative;
+}
+.site-title{
+font-family:'Ballet',cursive;
+  font-size:clamp(2.8rem,7vw,4.2rem);
+  color:var(--ink);line-height:1.1;
+  letter-spacing:-0.01em;
+}
+.site-subtitle{
+  font-family:'Cardo',serif;
+  font-style:italic;font-size:0.95rem;
+  color:var(--ink3);margin-top:0.35rem;
+  letter-spacing:0.04em;
+}
+.header-date{
+  font-family:'Cardo',serif;font-size:0.85rem;
+  color:var(--ink3);margin-top:0.5rem;
+  letter-spacing:0.06em;text-transform:uppercase;
+}
+
+/* NAV TABS */
+.nav-tabs{
+  display:flex;gap:0.35rem;background:var(--cream2);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:0.35rem;margin-bottom:2rem;overflow-x:auto;
+  scrollbar-width:none;
+}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{
+  flex:0 0 auto;padding:0.5rem 1rem;
+  border-radius:var(--radius-sm);border:none;background:transparent;
+  cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;
+  font-weight:500;color:var(--ink2);transition:all .18s ease;
+  white-space:nowrap;
+}
+.nav-tab:hover{background:var(--cream3);color:var(--ink)}
+.nav-tab.active{background:var(--cream);color:var(--ink);box-shadow:0 1px 4px var(--shadow);border:1px solid var(--border)}
+
+/* VIEWS */
+.view{display:none}
+.view.active{display:block}
+
+/* PROGRESS BAR */
+.progress-section{
+  background:var(--cream2);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:1.5rem 2rem;
+  margin-bottom:1.75rem;
+  display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;
+}
+.progress-left{}
+.progress-title{
+  font-family:'Cardo',serif;font-size:1.1rem;
+  color:var(--ink2);margin-bottom:0.75rem;
+}
+.progress-bar-wrap{
+  background:var(--border);border-radius:999px;
+  height:8px;overflow:hidden;margin-bottom:0.5rem;
+}
+.progress-bar-fill{
+  height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--sage),var(--yellow));
+  transition:width .5s cubic-bezier(.4,0,.2,1);
+}
+.progress-text{
+  font-family:'Cardo',serif;font-size:0.9rem;color:var(--ink3);font-style:italic;
+}
+.progress-right{display:flex;gap:1.25rem;align-items:center}
+.stat-pill{text-align:center}
+.stat-pill .val{
+  font-family:'Cardo',serif;font-size:1.6rem;font-weight:700;
+  color:var(--ink);line-height:1;
+}
+.stat-pill .lbl{
+  font-size:0.7rem;color:var(--ink3);text-transform:uppercase;
+  letter-spacing:0.08em;margin-top:0.15rem;font-family:'Inter',sans-serif;
+}
+
+/* MORNING ROUTINE BTN */
+.routine-btn{
+  width:100%;padding:1rem 1.5rem;
+  background:var(--ink);color:var(--cream);
+  border:none;border-radius:var(--radius);cursor:pointer;
+  font-family:'Cardo',serif;font-size:1.05rem;
+  font-style:italic;letter-spacing:0.02em;
+  transition:all .18s ease;margin-bottom:1.75rem;
+  display:flex;align-items:center;justify-content:center;gap:0.75rem;
+}
+.routine-btn:hover{background:var(--ink2);transform:translateY(-1px)}
+.routine-btn .icon{font-size:1.2rem}
+
+/* SEARCH & FILTERS */
+.toolbar{display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center}
+.search-wrap{position:relative;flex:1;min-width:200px}
+.search-wrap svg{position:absolute;left:0.85rem;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--ink3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.search-input{
+  width:100%;padding:0.6rem 0.9rem 0.6rem 2.4rem;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--cream);font-family:'Inter',sans-serif;font-size:0.88rem;
+  color:var(--ink);outline:none;transition:border-color .15s;
+}
+.search-input:focus{border-color:var(--sage)}
+.search-input::placeholder{color:var(--ink3)}
+.filter-btn{
+  padding:0.6rem 1rem;border:1px solid var(--border);
+  border-radius:var(--radius-sm);background:var(--cream);
+  font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--ink2);
+  cursor:pointer;transition:all .15s;white-space:nowrap;font-weight:500;
+}
+.filter-btn:hover,.filter-btn.active{background:var(--cream3);border-color:var(--border2);color:var(--ink)}
+.filter-btn.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+/* CATEGORY FILTER CHIPS */
+.cat-chips{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.cat-chip{
+  padding:0.35rem 0.85rem;border-radius:999px;
+  border:1px solid var(--border);background:var(--cream);
+  font-size:0.78rem;font-weight:500;cursor:pointer;
+  transition:all .15s;color:var(--ink2);font-family:'Inter',sans-serif;
+}
+.cat-chip:hover{border-color:var(--border2);color:var(--ink)}
+.cat-chip.active{color:white;border-color:transparent}
+
+/* GAME GRID */
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1rem;
+}
+.section-label{
+  font-family:'Cardo',serif;font-size:1rem;
+  color:var(--ink2);font-style:italic;
+  padding-bottom:0.5rem;border-bottom:1px solid var(--border);
+  margin:1.5rem 0 1rem;grid-column:1/-1;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.section-label span{font-size:1.1rem}
+
+/* GAME CARD */
+.game-card{
+  background:var(--cream);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.1rem 1.2rem 1rem;
+  position:relative;transition:all .2s ease;
+  display:flex;flex-direction:column;gap:0.6rem;
+  overflow:hidden;
+}
+.game-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  background:var(--card-accent,var(--sage));
+}
+.game-card:hover{
+  border-color:var(--border2);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px var(--shadow);
+}
+.game-card.completed{background:var(--cream2)}
+.game-card.completed .game-name{color:var(--ink3)}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem}
+.card-icon-wrap{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.25rem;flex-shrink:0;
+  background:var(--card-icon-bg,var(--sage-light));
+}
+.card-actions-top{display:flex;gap:0.4rem}
+.fav-btn,.complete-btn-top{
+  width:28px;height:28px;border-radius:7px;border:1px solid var(--border);
+  background:transparent;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:all .15s;font-size:0.85rem;
+}
+.fav-btn:hover{background:var(--yellow-light);border-color:var(--yellow)}
+.fav-btn.active{background:var(--yellow-light);border-color:var(--yellow)}
+.complete-btn-top:hover{background:var(--sage-light);border-color:var(--sage)}
+.complete-btn-top.done{background:var(--sage-light);border-color:var(--sage)}
+
+.game-name{
+  font-family:'Cardo',serif;font-size:1.05rem;font-weight:700;
+  color:var(--ink);line-height:1.2;
+}
+.game-meta{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.cat-badge{
+  font-size:0.7rem;font-weight:600;letter-spacing:0.05em;
+  padding:0.2rem 0.55rem;border-radius:999px;
+  font-family:'Inter',sans-serif;text-transform:uppercase;
+}
+.time-badge{
+  font-size:0.72rem;color:var(--ink3);font-family:'Inter',sans-serif;
+  display:flex;align-items:center;gap:0.25rem;
+}
+
+.card-bottom{display:flex;align-items:center;gap:0.5rem;margin-top:0.2rem}
+.play-btn{
+  flex:1;padding:0.5rem 0.75rem;
+  background:var(--card-accent,var(--sage));color:white;
+  border:none;border-radius:8px;cursor:pointer;
+  font-family:'Cardo',serif;font-size:0.9rem;font-style:italic;
+  transition:all .15s;text-align:center;text-decoration:none;
+  display:block;
+}
+.play-btn:hover{opacity:0.88;transform:translateY(-1px)}
+.complete-toggle{
+  padding:0.5rem 0.65rem;border:1px solid var(--border);
+  border-radius:8px;background:transparent;cursor:pointer;
+  font-size:0.9rem;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;
+  min-width:36px;
+}
+.complete-toggle:hover{background:var(--sage-light);border-color:var(--sage)}
+.complete-toggle.done{background:var(--sage-light);border-color:var(--sage)}
+
+/* COMPLETED STAMP */
+.done-stamp{
+  position:absolute;top:50%;right:1rem;transform:translateY(-50%) rotate(12deg);
+  font-family:'Cardo',serif;font-size:0.7rem;font-weight:700;
+  color:var(--sage-dark);border:2px solid var(--sage);
+  padding:0.2rem 0.5rem;border-radius:4px;letter-spacing:0.1em;
+  text-transform:uppercase;opacity:0.6;pointer-events:none;
+  display:none;
+}
+.game-card.completed .done-stamp{display:block}
+
+/* EMPTY STATE */
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:4rem 2rem;
+  color:var(--ink3);font-family:'Cardo',serif;font-style:italic;font-size:1.1rem;
+}
+
+/* STREAK WIDGET */
+.streak-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0.75rem;margin-bottom:1.75rem;
+}
+.streak-card{
+  background:var(--cream2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.1rem 1.25rem;text-align:center;
+}
+.streak-val{
+  font-family:'Cardo',serif;font-size:2rem;font-weight:700;
+  color:var(--ink);line-height:1;
+}
+.streak-lbl{
+  font-size:0.72rem;color:var(--ink3);text-transform:uppercase;
+  letter-spacing:0.08em;margin-top:0.3rem;font-family:'Inter',sans-serif;
+}
+.streak-emoji{font-size:1.3rem;display:block;margin-bottom:0.3rem}
+
+/* STATS VIEW */
+.stats-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1rem;margin-bottom:2rem;
+}
+.stats-card{
+  background:var(--cream2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.25rem 1.5rem;
+}
+.stats-card-title{
+  font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--ink3);font-family:'Inter',sans-serif;margin-bottom:0.5rem;
+}
+.stats-card-val{
+  font-family:'Cardo',serif;font-size:1.8rem;font-weight:700;color:var(--ink);
+}
+.stats-card-sub{
+  font-family:'Cardo',serif;font-style:italic;font-size:0.85rem;
+  color:var(--ink2);margin-top:0.25rem;
+}
+.cat-breakdown{margin-top:1.25rem}
+.cat-bar-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem}
+.cat-bar-label{font-size:0.8rem;color:var(--ink2);width:100px;flex-shrink:0;font-family:'Inter',sans-serif}
+.cat-bar-bg{flex:1;background:var(--border);border-radius:999px;height:6px}
+.cat-bar-fill{height:6px;border-radius:999px;transition:width .6s ease}
+.cat-bar-count{font-size:0.75rem;color:var(--ink3);min-width:24px;text-align:right;font-family:'Inter',sans-serif}
+
+/* CALENDAR VIEW */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.cal-title{font-family:'Cardo',serif;font-size:1.3rem;color:var(--ink)}
+.cal-nav{display:flex;gap:0.5rem}
+.cal-nav-btn{
+  width:34px;height:34px;border:1px solid var(--border);
+  border-radius:8px;background:var(--cream);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;transition:all .15s;color:var(--ink2);
+}
+.cal-nav-btn:hover{background:var(--cream3);border-color:var(--border2)}
+.cal-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:0.35rem;
+}
+.cal-day-name{
+  text-align:center;font-size:0.72rem;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--ink3);padding:0.4rem 0;
+  font-family:'Inter',sans-serif;
+}
+.cal-day{
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;font-size:0.82rem;cursor:pointer;
+  border:1px solid transparent;transition:all .15s;
+  font-family:'Cardo',serif;position:relative;
+  color:var(--ink2);
+}
+.cal-day:hover:not(.empty){background:var(--cream2);border-color:var(--border)}
+.cal-day.empty{cursor:default}
+.cal-day.today{border-color:var(--sage);color:var(--sage-dark);font-weight:700}
+.cal-day.played{background:var(--sage-light);color:var(--sage-dark)}
+.cal-day.played-all{background:var(--sage);color:white}
+.cal-day.missed{background:var(--cream3);color:var(--ink3)}
+.cal-day.selected{border-color:var(--ink);border-width:2px}
+.cal-day-dot{
+  position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:var(--yellow);
+  display:none;
+}
+.cal-day.has-activity .cal-day-dot{display:block}
+
+.cal-detail{
+  margin-top:1.5rem;padding:1.25rem 1.5rem;
+  background:var(--cream2);border:1px solid var(--border);
+  border-radius:var(--radius);
+}
+.cal-detail-title{
+  font-family:'Cardo',serif;font-size:1.05rem;color:var(--ink);
+  margin-bottom:0.75rem;
+}
+.cal-detail-list{display:flex;flex-direction:column;gap:0.4rem}
+.cal-detail-item{
+  display:flex;align-items:center;gap:0.6rem;
+  font-size:0.85rem;color:var(--ink2);font-family:'Cardo',serif;
+}
+.cal-detail-dot{
+  width:6px;height:6px;border-radius:50%;flex-shrink:0;
+  background:var(--sage);
+}
+
+/* SETTINGS VIEW */
+.settings-section{margin-bottom:2rem}
+.settings-title{
+  font-family:'Cardo',serif;font-size:1.2rem;font-weight:700;
+  color:var(--ink);margin-bottom:1rem;padding-bottom:0.5rem;
+  border-bottom:1px solid var(--border);
+}
+.settings-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.85rem 0;border-bottom:1px solid var(--border);gap:1rem;
+}
+.settings-row:last-child{border-bottom:none}
+.settings-row-left{}
+.settings-row-label{font-size:0.9rem;color:var(--ink);font-family:'Cardo',serif;font-weight:700}
+.settings-row-desc{font-size:0.78rem;color:var(--ink3);margin-top:0.15rem;font-family:'Inter',sans-serif}
+.toggle{
+  width:44px;height:24px;border-radius:12px;border:none;
+  background:var(--border2);cursor:pointer;position:relative;
+  transition:background .2s;flex-shrink:0;
+}
+.toggle::after{
+  content:'';position:absolute;top:3px;left:3px;
+  width:18px;height:18px;border-radius:50%;background:white;
+  transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.toggle.on{background:var(--sage)}
+.toggle.on::after{left:23px}
+.time-input{
+  padding:0.4rem 0.65rem;border:1px solid var(--border);
+  border-radius:8px;font-family:'Inter',sans-serif;font-size:0.85rem;
+  background:var(--cream);color:var(--ink);outline:none;
+}
+.time-input:focus{border-color:var(--sage)}
+
+/* ADD GAME FORM */
+.add-form{
+  background:var(--cream2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem;
+}
+.form-row{margin-bottom:1rem}
+.form-label{
+  display:block;font-size:0.78rem;text-transform:uppercase;
+  letter-spacing:0.07em;color:var(--ink2);margin-bottom:0.4rem;
+  font-family:'Inter',sans-serif;font-weight:600;
+}
+.form-input,.form-select{
+  width:100%;padding:0.6rem 0.85rem;
+  border:1px solid var(--border);border-radius:8px;
+  background:var(--cream);font-family:'Inter',sans-serif;
+  font-size:0.88rem;color:var(--ink);outline:none;
+  transition:border-color .15s;
+}
+.form-input:focus,.form-select:focus{border-color:var(--sage)}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.btn-primary{
+  padding:0.65rem 1.5rem;background:var(--ink);color:var(--cream);
+  border:none;border-radius:8px;cursor:pointer;
+  font-family:'Cardo',serif;font-size:0.95rem;font-style:italic;
+  transition:all .15s;
+}
+.btn-primary:hover{background:var(--ink2)}
+.btn-secondary{
+  padding:0.65rem 1.25rem;background:transparent;color:var(--ink2);
+  border:1px solid var(--border);border-radius:8px;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:0.85rem;transition:all .15s;
+}
+.btn-secondary:hover{background:var(--cream3);border-color:var(--border2)}
+
+/* MANAGE GAMES */
+.manage-list{display:flex;flex-direction:column;gap:0.5rem}
+.manage-item{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.75rem 1rem;background:var(--cream2);
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+}
+.manage-icon{font-size:1.2rem;flex-shrink:0}
+.manage-name{font-family:'Cardo',serif;font-size:0.95rem;color:var(--ink);flex:1}
+.manage-cat{font-size:0.72rem;color:var(--ink3);font-family:'Inter',sans-serif}
+.manage-actions{display:flex;gap:0.35rem;flex-shrink:0}
+.icon-btn{
+  width:30px;height:30px;border:1px solid var(--border);
+  border-radius:7px;background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;transition:all .15s;
+}
+.icon-btn:hover{background:var(--cream3);border-color:var(--border2)}
+.icon-btn.danger:hover{background:var(--rose-light);border-color:var(--rose)}
+
+/* NOTIFICATIONS TOAST */
+.toast{
+  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--ink);color:var(--cream);padding:0.75rem 1.5rem;
+  border-radius:var(--radius);font-family:'Cardo',serif;font-style:italic;
+  font-size:0.95rem;transition:transform .3s ease;z-index:1000;
+  white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(44,36,32,.35);
+  display:flex;align-items:center;justify-content:center;
+  z-index:500;opacity:0;pointer-events:none;transition:opacity .2s;
+  padding:1rem;
+}
+.modal-overlay.show{opacity:1;pointer-events:all}
+.modal{
+  background:var(--cream);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:2rem;max-width:480px;
+  width:100%;max-height:90vh;overflow-y:auto;
+}
+.modal-title{
+  font-family:'Dancing Script',cursive;font-size:1.8rem;
+  color:var(--ink);margin-bottom:0.35rem;
+}
+.modal-sub{font-family:'Cardo',serif;font-style:italic;color:var(--ink3);font-size:0.9rem;margin-bottom:1.5rem}
+.modal-close{
+  float:right;background:transparent;border:none;
+  font-size:1.3rem;cursor:pointer;color:var(--ink3);
+  margin-top:-0.5rem;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .app{padding:0 1rem 4rem}
+  .progress-section{grid-template-columns:1fr;gap:0.75rem}
+  .progress-right{justify-content:center}
+  .streak-row{grid-template-columns:repeat(3,1fr)}
+  .games-grid{grid-template-columns:1fr}
+  .form-row-2{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:380px){
+  .streak-row{grid-template-columns:1fr 1fr}
+  .stats-grid{grid-template-columns:1fr}
+}
+
+/* ANIMATIONS */
+@keyframes stamp-in{
+  0%{transform:rotate(12deg) scale(2);opacity:0}
+  100%{transform:rotate(12deg) scale(1);opacity:0.6}
+}
+.game-card.just-completed .done-stamp{animation:stamp-in .3s ease forwards}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view.active{animation:fadeIn .2s ease}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="site-title">The House of Pallavi</div>
+    <div class="site-subtitle">a daily cabinet of puzzles & curiosities</div>
+    <div class="header-date" id="headerDate"></div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="nav-tabs" role="tablist">
+    <button class="nav-tab active" data-view="dashboard" role="tab">Today</button>
+    <button class="nav-tab" data-view="streaks" role="tab">Streaks</button>
+    <button class="nav-tab" data-view="stats" role="tab">Statistics</button>
+    <button class="nav-tab" data-view="calendar" role="tab">Calendar</button>
+    <button class="nav-tab" data-view="settings" role="tab">Settings & Games</button>
+  </nav>
+
+  <!-- DASHBOARD VIEW -->
+  <div class="view active" id="view-dashboard">
+    <!-- Progress -->
+    <div class="progress-section">
+      <div class="progress-left">
+        <div class="progress-title">Today's Progress</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <div class="progress-text" id="progressText">Loading your puzzles…</div>
+      </div>
+      <div class="progress-right">
+        <div class="stat-pill">
+          <div class="val" id="doneCount">0</div>
+          <div class="lbl">Done</div>
+        </div>
+        <div class="stat-pill" style="color:var(--ink3)">
+          <div class="val" id="leftCount">0</div>
+          <div class="lbl">Left</div>
+        </div>
+        <div class="stat-pill">
+          <div class="val" id="pctCount">0%</div>
+          <div class="lbl">Complete</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Morning Routine -->
+    <button class="routine-btn" id="routineBtn" onclick="startRoutine()">
+      <span class="icon">☀️</span> Start My Morning Routine
+    </button>
+
+    <!-- Search & Filters -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" id="searchInput" type="search" placeholder="Search puzzles…" oninput="renderGames()"/>
+      </div>
+      <button class="filter-btn" id="filterFav" onclick="toggleFilter('fav')">★ Favourites</button>
+      <button class="filter-btn" id="filterUnfinished" onclick="toggleFilter('unfinished')">Unfinished</button>
+    </div>
+
+    <!-- Category Chips -->
+    <div class="cat-chips" id="catChips"></div>
+
+    <!-- Games Grid -->
+    <div class="games-grid" id="gamesGrid"></div>
+  </div>
+
+  <!-- STREAKS VIEW -->
+  <div class="view" id="view-streaks">
+    <div class="streak-row">
+      <div class="streak-card">
+        <span class="streak-emoji">🔥</span>
+        <div class="streak-val" id="currentStreak">0</div>
+        <div class="streak-lbl">Current Streak</div>
+      </div>
+      <div class="streak-card">
+        <span class="streak-emoji">🏆</span>
+        <div class="streak-val" id="longestStreak">0</div>
+        <div class="streak-lbl">Longest Streak</div>
+      </div>
+      <div class="streak-card">
+        <span class="streak-emoji">📅</span>
+        <div class="streak-val" id="totalDays">0</div>
+        <div class="streak-lbl">Total Active Days</div>
+      </div>
+    </div>
+    <div style="background:var(--cream2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;font-family:'Cardo',serif;color:var(--ink2);font-style:italic;font-size:1rem;line-height:1.7;">
+      <p>A streak is counted when you complete at least one puzzle on a given day. Keep coming back each morning to build your chain.</p>
+      <p style="margin-top:1rem;font-size:0.9rem;color:var(--ink3)">Your streak resets if you miss a full day without completing any puzzle.</p>
+    </div>
+  </div>
+
+  <!-- STATS VIEW -->
+  <div class="view" id="view-stats">
+    <div class="stats-grid">
+      <div class="stats-card">
+        <div class="stats-card-title">Total Puzzles Played</div>
+        <div class="stats-card-val" id="statTotal">0</div>
+        <div class="stats-card-sub">across all sessions</div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-card-title">Average Per Day</div>
+        <div class="stats-card-val" id="statAvg">0</div>
+        <div class="stats-card-sub">puzzles completed</div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-card-title">Longest Streak</div>
+        <div class="stats-card-val" id="statStreak">0</div>
+        <div class="stats-card-sub">consecutive days</div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-card-title">Favourite Category</div>
+        <div class="stats-card-val" id="statFavCat" style="font-size:1.2rem">—</div>
+        <div class="stats-card-sub">most time spent</div>
+      </div>
+    </div>
+
+    <div style="background:var(--cream2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;">
+      <div class="settings-title">Completions by Category</div>
+      <div class="cat-breakdown" id="catBreakdown"></div>
+    </div>
+  </div>
+
+  <!-- CALENDAR VIEW -->
+  <div class="view" id="view-calendar">
+    <div class="cal-header">
+      <div class="cal-title" id="calTitle"></div>
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+        <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-detail" id="calDetail" style="display:none">
+      <div class="cal-detail-title" id="calDetailTitle"></div>
+      <div class="cal-detail-list" id="calDetailList"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS VIEW -->
+  <div class="view" id="view-settings">
+    <!-- Notifications -->
+    <div class="settings-section">
+      <div class="settings-title">Reminders</div>
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-label">Enable notifications</div>
+          <div class="settings-row-desc">Browser push notifications for daily puzzles</div>
+        </div>
+        <button class="toggle" id="notifToggle" onclick="toggleNotifications()"></button>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-label">Morning reminder</div>
+          <div class="settings-row-desc">"Time for today's puzzles"</div>
+        </div>
+        <input class="time-input" type="time" id="morningTime" value="08:00" onchange="saveSettings()"/>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-label">Evening nudge</div>
+          <div class="settings-row-desc">"You still have puzzles left today"</div>
+        </div>
+        <input class="time-input" type="time" id="eveningTime" value="20:00" onchange="saveSettings()"/>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-label">Streak alert</div>
+          <div class="settings-row-desc">"One game away from keeping your streak"</div>
+        </div>
+        <button class="toggle" id="streakAlertToggle" onclick="toggleStreakAlert()"></button>
+      </div>
+    </div>
+
+    <!-- Add Custom Game -->
+    <div class="settings-section">
+      <div class="settings-title">Add a Custom Game</div>
+      <div class="add-form">
+        <div class="form-row-2">
+          <div class="form-row">
+            <label class="form-label">Game Name</label>
+            <input class="form-input" id="newName" placeholder="e.g. My Daily Quiz" type="text"/>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Icon (emoji)</label>
+            <input class="form-input" id="newIcon" placeholder="🎯" type="text" maxlength="4"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">URL</label>
+          <input class="form-input" id="newUrl" placeholder="https://..." type="url"/>
+        </div>
+        <div class="form-row-2">
+          <div class="form-row">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="newCat">
+              <option>Word & Language</option>
+              <option>Numbers & Logic</option>
+              <option>Geography</option>
+              <option>Trivia & Knowledge</option>
+              <option>Science & Nature</option>
+              <option>Literature</option>
+              <option>Economics & Finance</option>
+              <option>Visual & Other</option>
+              <option>Custom</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Est. Time</label>
+            <select class="form-select" id="newTime">
+              <option>2 min</option>
+              <option>5 min</option>
+              <option>10 min</option>
+              <option>15 min</option>
+              <option>20+ min</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:0.5rem">
+          <button class="btn-secondary" onclick="clearAddForm()">Clear</button>
+          <button class="btn-primary" onclick="addCustomGame()">Add Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manage Games -->
+    <div class="settings-section">
+      <div class="settings-title">Manage Games</div>
+      <div class="manage-list" id="manageList"></div>
+    </div>
+
+    <!-- Reset -->
+    <div class="settings-section">
+      <div class="settings-title">Data</div>
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-label">Reset all history</div>
+          <div class="settings-row-desc">Clears streaks, stats, and calendar data permanently</div>
+        </div>
+        <button class="btn-secondary" onclick="confirmReset()" style="color:var(--rose-dark);border-color:var(--rose)">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL (confirm reset) -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-title">Are you sure?</div>
+    <div class="modal-sub">This will permanently erase all your streaks, stats, and calendar history.</div>
+    <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.5rem">
+      <button class="btn-secondary" onclick="closeModalDirect()">Cancel</button>
+      <button class="btn-primary" onclick="doReset()" style="background:var(--rose-dark)">Yes, reset everything</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
+const DEFAULT_GAMES = [
+  // Word & Language
+  {id:'wordle',name:'Wordle',icon:'🟩',cat:'Word & Language',time:'3 min',url:'https://www.nytimes.com/games/wordle/index.html',custom:false},
+  {id:'connections',name:'Connections',icon:'🔗',cat:'Word & Language',time:'5 min',url:'https://www.nytimes.com/games/connections',custom:false},
+  {id:'strands',name:'Strands',icon:'🧵',cat:'Word & Language',time:'5 min',url:'https://www.nytimes.com/games/strands',custom:false},
+  {id:'waffle',name:'Waffle',icon:'🧇',cat:'Word & Language',time:'5 min',url:'https://wafflegame.net/',custom:false},
+  {id:'semantle',name:'Semantle',icon:'🧠',cat:'Word & Language',time:'10 min',url:'https://semantle.com/',custom:false},
+  {id:'redactle',name:'Redactle',icon:'📄',cat:'Word & Language',time:'10 min',url:'https://redactle.net/',custom:false},
+  // Numbers & Logic
+  {id:'nerdle',name:'Nerdle',icon:'🔢',cat:'Numbers & Logic',time:'5 min',url:'https://nerdlegame.com/',custom:false},
+  {id:'mathler',name:'Mathler',icon:'➗',cat:'Numbers & Logic',time:'5 min',url:'https://www.mathler.com/',custom:false},
+  {id:'nonograms',name:'Nonograms',icon:'⬛',cat:'Numbers & Logic',time:'10 min',url:'https://www.puzzle-nonograms.com/',custom:false},
+  {id:'mahjong',name:'Mahjong',icon:'🀄',cat:'Numbers & Logic',time:'15 min',url:'https://www.mahjong.com/',custom:false},
+  // Geography
+  {id:'worldle',name:'Worldle',icon:'🌍',cat:'Geography',time:'3 min',url:'https://worldle.teuteuf.fr/',custom:false},
+  {id:'globle',name:'Globle',icon:'🌐',cat:'Geography',time:'5 min',url:'https://globle-game.com/',custom:false},
+  {id:'flagle',name:'Flagle',icon:'🚩',cat:'Geography',time:'3 min',url:'https://www.flagle.io/',custom:false},
+  {id:'tradle',name:'Tradle',icon:'📦',cat:'Geography',time:'5 min',url:'https://oec.world/en/tradle/',custom:false},
+  {id:'timeguessr',name:'Timeguessr',icon:'🕰️',cat:'Geography',time:'5 min',url:'https://timeguessr.com/',custom:false},
+  // Trivia & Knowledge
+  {id:'wikitrivia',name:'Wikitrivia',icon:'📚',cat:'Trivia & Knowledge',time:'5 min',url:'https://wikitrivia.tomjwatson.com/',custom:false},
+  {id:'anthropeum',name:'Anthropeum',icon:'🏛️',cat:'Trivia & Knowledge',time:'5 min',url:'https://anthropeum.com/',custom:false},
+  {id:'chronophoto',name:'Chronophoto',icon:'📷',cat:'Trivia & Knowledge',time:'5 min',url:'https://www.chronophoto.app/',custom:false},
+  {id:'contexto',name:'Contexto',icon:'💬',cat:'Trivia & Knowledge',time:'5 min',url:'https://contexto.me/',custom:false},
+  {id:'murdle',name:'Murdle',icon:'🔍',cat:'Trivia & Knowledge',time:'10 min',url:'https://murdle.com/',custom:false},
+  // Science & Nature
+  {id:'metazooa',name:'Metazooa',icon:'🦎',cat:'Science & Nature',time:'5 min',url:'https://metazooa.com/',custom:false},
+  // Literature
+  {id:'bookdle',name:'Bookdle',icon:'📖',cat:'Literature',time:'5 min',url:'https://book-dle.com/',custom:false},
+  // Economics & Finance
+  {id:'uncoveredshorts',name:'Uncovered Shorts',icon:'📈',cat:'Economics & Finance',time:'5 min',url:'https://uncoveredshorts.com/',custom:false},
+  {id:'financhle',name:'Financhle',icon:'💹',cat:'Economics & Finance',time:'5 min',url:'https://financhle.com/',custom:false},
+  // Visual & Other
+  {id:'colorpuzzle',name:'Color Puzzle',icon:'🎨',cat:'Visual & Other',time:'5 min',url:'https://www.reddit.com/r/ColorPuzzleGame/',custom:false},
+  {id:'explordle',name:'Explordle',icon:'🎬',cat:'Visual & Other',time:'5 min',url:'https://www.explordle.com/',custom:false},
+];
+
+const CAT_COLORS = {
+  'Word & Language':    {accent:'#8BA888',iconBg:'#C5D9C3',badge:'#EAF3E0',badgeText:'#3A5C38'},
+  'Numbers & Logic':    {accent:'#7B9BB5',iconBg:'#C0D4E4',badge:'#E0EEF8',badgeText:'#2A4F6E'},
+  'Geography':          {accent:'#C4853A',iconBg:'#EDD5A8',badge:'#FDF0D8',badgeText:'#6B4010'},
+  'Trivia & Knowledge': {accent:'#9B8EC4',iconBg:'#D4CEEC',badge:'#EDE8F8',badgeText:'#3E2E7E'},
+  'Science & Nature':   {accent:'#5A9E8A',iconBg:'#B8DDD4',badge:'#DFF5EE',badgeText:'#1E5E4A'},
+  'Literature':         {accent:'#C97A72',iconBg:'#ECC4C0',badge:'#FAEAE8',badgeText:'#6A2820'},
+  'Economics & Finance':{accent:'#B8843A',iconBg:'#EDD8B0',badge:'#FDF2DC',badgeText:'#5E3C10'},
+  'Visual & Other':     {accent:'#7A8FBB',iconBg:'#C8D4EC',badge:'#E8EEF8',badgeText:'#2A3A6E'},
+  'Custom':             {accent:'#9B8EC4',iconBg:'#D4CEEC',badge:'#EDE8F8',badgeText:'#3E2E7E'},
+};
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+
+let games = [];
+let completions = {}; // { 'YYYY-MM-DD': ['game-id', ...] }
+let favorites = new Set();
+let settings = { notif: false, streakAlert: false, morningTime: '08:00', eveningTime: '20:00' };
+let filters = { fav: false, unfinished: false, cat: 'All', search: '' };
+let calMonth = new Date();
+let selectedCalDate = null;
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function getTodayCompletions() {
+  return completions[todayKey()] || [];
+}
+
+// ─── PERSISTENCE ─────────────────────────────────────────────────────────────
+
+function save() {
+  localStorage.setItem('aa_games', JSON.stringify(games));
+  localStorage.setItem('aa_completions', JSON.stringify(completions));
+  localStorage.setItem('aa_favorites', JSON.stringify([...favorites]));
+  localStorage.setItem('aa_settings', JSON.stringify(settings));
+}
+
+function load() {
+  try {
+    const g = localStorage.getItem('aa_games');
+    games = g ? JSON.parse(g) : [...DEFAULT_GAMES];
+    const c = localStorage.getItem('aa_completions');
+    completions = c ? JSON.parse(c) : {};
+    const f = localStorage.getItem('aa_favorites');
+    favorites = f ? new Set(JSON.parse(f)) : new Set();
+    const s = localStorage.getItem('aa_settings');
+    settings = s ? JSON.parse(s) : settings;
+  } catch(e) {
+    games = [...DEFAULT_GAMES];
+    completions = {};
+    favorites = new Set();
+  }
+}
+
+// ─── DAILY RESET CHECK ───────────────────────────────────────────────────────
+
+function checkDailyReset() {
+  const lastVisit = localStorage.getItem('aa_last_visit');
+  const today = todayKey();
+  localStorage.setItem('aa_last_visit', today);
+  if (lastVisit && lastVisit !== today) {
+    // Update streak
+    updateStreak(lastVisit);
+  }
+}
+
+function updateStreak(lastDateKey) {
+  let sd = JSON.parse(localStorage.getItem('aa_streak_data') || '{"current":0,"longest":0,"totalDays":0}');
+  const lastComps = completions[lastDateKey] || [];
+  if (lastComps.length > 0) {
+    sd.current++;
+    sd.totalDays++;
+    if (sd.current > sd.longest) sd.longest = sd.current;
+  } else {
+    sd.current = 0;
+  }
+  localStorage.setItem('aa_streak_data', JSON.stringify(sd));
+}
+
+function getStreakData() {
+  return JSON.parse(localStorage.getItem('aa_streak_data') || '{"current":0,"longest":0,"totalDays":0}');
+}
+
+// ─── RENDER GAMES ────────────────────────────────────────────────────────────
+
+function renderGames() {
+  const todayDone = getTodayCompletions();
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  filters.search = search;
+
+  let cats = [...new Set(games.map(g => g.cat))];
+  renderCatChips(cats);
+
+  let filtered = games.filter(g => {
+    if (filters.fav && !favorites.has(g.id)) return false;
+    if (filters.unfinished && todayDone.includes(g.id)) return false;
+    if (filters.cat !== 'All' && g.cat !== filters.cat) return false;
+    if (search && !g.name.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  // Favorites first
+  const favGames = filtered.filter(g => favorites.has(g.id));
+  const nonFav = filtered.filter(g => !favorites.has(g.id));
+
+  const grid = document.getElementById('gamesGrid');
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty-state">No puzzles match your search ✦</div>';
+    return;
+  }
+
+  function renderSection(list, label, emoji) {
+    if (list.length === 0) return;
+    if (label) {
+      const lbl = document.createElement('div');
+      lbl.className = 'section-label';
+      lbl.innerHTML = `<span>${emoji}</span>${label}`;
+      grid.appendChild(lbl);
+    }
+    // Group by category if no specific cat filter
+    if (filters.cat === 'All' && !filters.fav) {
+      const byCat = {};
+      list.forEach(g => {
+        if (!byCat[g.cat]) byCat[g.cat] = [];
+        byCat[g.cat].push(g);
+      });
+      Object.entries(byCat).forEach(([cat, catGames]) => {
+        const catLbl = document.createElement('div');
+        catLbl.className = 'section-label';
+        catLbl.innerHTML = `<span>${getCatEmoji(cat)}</span>${cat}`;
+        grid.appendChild(catLbl);
+        catGames.forEach(g => grid.appendChild(makeCard(g, todayDone.includes(g.id))));
+      });
+    } else {
+      list.forEach(g => grid.appendChild(makeCard(g, todayDone.includes(g.id))));
+    }
+  }
+
+  if (favGames.length > 0 && !filters.fav) {
+    renderSection(favGames, 'Pinned', '⭐');
+    if (nonFav.length > 0) {
+      const lbl = document.createElement('div');
+      lbl.className = 'section-label';
+      lbl.innerHTML = `<span>✦</span>All Puzzles`;
+      grid.appendChild(lbl);
+      if (filters.cat === 'All') {
+        const byCat = {};
+        nonFav.forEach(g => {
+          if (!byCat[g.cat]) byCat[g.cat] = [];
+          byCat[g.cat].push(g);
+        });
+        Object.entries(byCat).forEach(([cat, catGames]) => {
+          const catLbl = document.createElement('div');
+          catLbl.className = 'section-label';
+          catLbl.innerHTML = `<span>${getCatEmoji(cat)}</span>${cat}`;
+          grid.appendChild(catLbl);
+          catGames.forEach(g => grid.appendChild(makeCard(g, todayDone.includes(g.id))));
+        });
+      } else {
+        nonFav.forEach(g => grid.appendChild(makeCard(g, todayDone.includes(g.id))));
+      }
+    }
+  } else {
+    renderSection(filtered, null, '');
+  }
+
+  updateProgress();
+}
+
+function getCatEmoji(cat) {
+  const map = {
+    'Word & Language':'📝','Numbers & Logic':'🔢','Geography':'🌍',
+    'Trivia & Knowledge':'🏛️','Science & Nature':'🔬','Literature':'📖',
+    'Economics & Finance':'📊','Visual & Other':'🎨','Custom':'✨'
+  };
+  return map[cat] || '✦';
+}
+
+function makeCard(game, isDone) {
+  const colors = CAT_COLORS[game.cat] || CAT_COLORS['Custom'];
+  const isFav = favorites.has(game.id);
+  const card = document.createElement('div');
+  card.className = `game-card${isDone ? ' completed' : ''}`;
+  card.id = `card-${game.id}`;
+  card.style.setProperty('--card-accent', colors.accent);
+  card.style.setProperty('--card-icon-bg', colors.iconBg);
+
+  card.innerHTML = `
+    <div class="card-top">
+      <div class="card-icon-wrap" role="img" aria-label="${game.name} icon">${game.icon}</div>
+      <div class="card-actions-top">
+        <button class="fav-btn${isFav?' active':''}" onclick="toggleFav('${game.id}')" title="${isFav?'Unpin':'Pin to favourites'}" aria-label="${isFav?'Unpin':'Pin'} ${game.name}">
+          ${isFav?'⭐':'☆'}
+        </button>
+      </div>
+    </div>
+    <div class="game-name">${game.name}</div>
+    <div class="game-meta">
+      <span class="cat-badge" style="background:${colors.badge};color:${colors.badgeText}">${game.cat}</span>
+      <span class="time-badge">⏱ ${game.time}</span>
+    </div>
+    <div class="card-bottom">
+      <a class="play-btn" href="${game.url}" target="_blank" rel="noopener" onclick="trackOpen('${game.id}')">Play →</a>
+      <button class="complete-toggle${isDone?' done':''}" onclick="toggleComplete('${game.id}')" title="${isDone?'Mark incomplete':'Mark complete'}" aria-label="${isDone?'Unmark':'Mark'} ${game.name} complete">
+        ${isDone?'✓':'○'}
+      </button>
+    </div>
+    <div class="done-stamp">Done</div>
+  `;
+  return card;
+}
+
+// ─── CATEGORY CHIPS ──────────────────────────────────────────────────────────
+
+function renderCatChips(cats) {
+  const el = document.getElementById('catChips');
+  const all = ['All', ...cats];
+  el.innerHTML = all.map(cat => {
+    const colors = cat !== 'All' ? (CAT_COLORS[cat] || CAT_COLORS['Custom']) : null;
+    const isActive = filters.cat === cat;
+    const style = isActive && colors ? `background:${colors.accent};border-color:${colors.accent};color:white` :
+                  isActive ? 'background:var(--ink);border-color:var(--ink);color:white' : '';
+    return `<button class="cat-chip${isActive?' active':''}" style="${style}" onclick="setCatFilter('${cat}')">${cat === 'All' ? 'All Categories' : cat}</button>`;
+  }).join('');
+}
+
+function setCatFilter(cat) {
+  filters.cat = cat;
+  renderGames();
+}
+
+// ─── INTERACTIONS ────────────────────────────────────────────────────────────
+
+function toggleFav(id) {
+  if (favorites.has(id)) favorites.delete(id);
+  else favorites.add(id);
+  save();
+  renderGames();
+}
+
+function toggleComplete(id) {
+  const today = todayKey();
+  if (!completions[today]) completions[today] = [];
+  const idx = completions[today].indexOf(id);
+  if (idx >= 0) {
+    completions[today].splice(idx, 1);
+  } else {
+    completions[today].push(id);
+    // Animate stamp
+    const card = document.getElementById(`card-${id}`);
+    if (card) {
+      card.classList.add('just-completed');
+      setTimeout(() => card.classList.remove('just-completed'), 500);
+    }
+    checkStreakNotification();
+  }
+  save();
+  updateProgress();
+
+  const card = document.getElementById(`card-${id}`);
+  if (card) {
+    const isDone = completions[today].includes(id);
+    card.className = `game-card${isDone?' completed':''}`;
+    card.id = `card-${id}`;
+    const toggle = card.querySelector('.complete-toggle');
+    if (toggle) { toggle.className = `complete-toggle${isDone?' done':''}`; toggle.textContent = isDone ? '✓' : '○'; }
+  }
+}
+
+function trackOpen(id) {
+  // Record that game was opened (optional future use)
+}
+
+function updateProgress() {
+  const todayDone = getTodayCompletions();
+  const total = games.length;
+  const done = todayDone.length;
+  const left = total - done;
+  const pct = total > 0 ? Math.round((done/total)*100) : 0;
+
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('leftCount').textContent = left;
+  document.getElementById('pctCount').textContent = pct + '%';
+
+  let msg = '';
+  if (done === 0) msg = 'Ready when you are — your puzzles await.';
+  else if (done === total) msg = 'All done for today! Extraordinary. ✦';
+  else if (pct >= 50) msg = `Halfway there — ${left} puzzle${left!==1?'s':''} remaining.`;
+  else msg = `${done} puzzle${done!==1?'s':''} completed — keep going!`;
+  document.getElementById('progressText').textContent = msg;
+}
+
+function toggleFilter(type) {
+  if (type === 'fav') {
+    filters.fav = !filters.fav;
+    document.getElementById('filterFav').classList.toggle('active', filters.fav);
+  } else {
+    filters.unfinished = !filters.unfinished;
+    document.getElementById('filterUnfinished').classList.toggle('active', filters.unfinished);
+  }
+  renderGames();
+}
+
+// ─── MORNING ROUTINE ─────────────────────────────────────────────────────────
+
+function startRoutine() {
+  const todayDone = getTodayCompletions();
+  const unfavFinished = games.filter(g => favorites.has(g.id) && !todayDone.includes(g.id));
+  const toOpen = unfavFinished.length > 0 ? unfavFinished : games.filter(g => !todayDone.includes(g.id));
+
+  if (toOpen.length === 0) {
+    showToast('All done for today! Nothing left to open. ✦');
+    return;
+  }
+
+  toOpen.forEach(g => window.open(g.url, '_blank'));
+  showToast(`Opened ${toOpen.length} puzzle${toOpen.length!==1?'s':''} — go get them! ☀️`);
+}
+
+// ─── STREAKS ─────────────────────────────────────────────────────────────────
+
+function renderStreaks() {
+  const sd = getStreakData();
+  document.getElementById('currentStreak').textContent = sd.current;
+  document.getElementById('longestStreak').textContent = sd.longest;
+  document.getElementById('totalDays').textContent = sd.totalDays;
+}
+
+function checkStreakNotification() {
+  const todayDone = getTodayCompletions();
+  const total = games.length;
+  if (settings.streakAlert && todayDone.length === total - 1) {
+    showToast('One puzzle away from completing your streak! 🔥');
+  }
+}
+
+// ─── STATS ───────────────────────────────────────────────────────────────────
+
+function renderStats() {
+  const sd = getStreakData();
+  const allDays = Object.values(completions);
+  const totalPlayed = allDays.reduce((s,a) => s + a.length, 0);
+  const activeDays = allDays.filter(a => a.length > 0).length;
+  const avg = activeDays > 0 ? (totalPlayed / activeDays).toFixed(1) : '0';
+
+  // Cat breakdown
+  const catCount = {};
+  Object.values(completions).forEach(day => {
+    day.forEach(id => {
+      const g = games.find(x => x.id === id);
+      if (g) catCount[g.cat] = (catCount[g.cat] || 0) + 1;
+    });
+  });
+
+  const topCat = Object.entries(catCount).sort((a,b) => b[1]-a[1])[0];
+
+  document.getElementById('statTotal').textContent = totalPlayed;
+  document.getElementById('statAvg').textContent = avg;
+  document.getElementById('statStreak').textContent = sd.longest;
+  document.getElementById('statFavCat').textContent = topCat ? topCat[0] : '—';
+  document.getElementById('statFavCat').style.fontSize = topCat ? '1rem' : '1.8rem';
+
+  const maxCount = topCat ? topCat[1] : 1;
+  const breakdown = document.getElementById('catBreakdown');
+  const cats = Object.keys(CAT_COLORS);
+  breakdown.innerHTML = cats.map(cat => {
+    const count = catCount[cat] || 0;
+    const colors = CAT_COLORS[cat];
+    const w = maxCount > 0 ? Math.round((count/maxCount)*100) : 0;
+    return `<div class="cat-bar-row">
+      <div class="cat-bar-label">${cat.split(' ')[0]}</div>
+      <div class="cat-bar-bg"><div class="cat-bar-fill" style="width:${w}%;background:${colors.accent}"></div></div>
+      <div class="cat-bar-count">${count}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── CALENDAR ────────────────────────────────────────────────────────────────
+
+let calYear, calMonthIdx;
+
+function initCal() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonthIdx = now.getMonth();
+  renderCal();
+}
+
+function changeMonth(dir) {
+  calMonthIdx += dir;
+  if (calMonthIdx > 11) { calMonthIdx = 0; calYear++; }
+  if (calMonthIdx < 0) { calMonthIdx = 11; calYear--; }
+  renderCal();
+}
+
+function renderCal() {
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calTitle').textContent = `${months[calMonthIdx]} ${calYear}`;
+
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  const days = ['S','M','T','W','T','F','S'];
+  days.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-day-name';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(calYear, calMonthIdx, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonthIdx+1, 0).getDate();
+  const today = new Date();
+  const todayStr = todayKey();
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonthIdx+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dayComps = completions[dateStr] || [];
+    const isToday = dateStr === todayStr;
+    const isPast = new Date(dateStr) < new Date(todayStr);
+    const isFuture = new Date(dateStr) > new Date(todayStr);
+
+    let cls = 'cal-day';
+    if (isToday) cls += ' today';
+    if (dayComps.length > 0) {
+      cls += dayComps.length >= games.length ? ' played-all' : ' played';
+    } else if (isPast) cls += ' missed';
+    if (dayComps.length > 0) cls += ' has-activity';
+    if (selectedCalDate === dateStr) cls += ' selected';
+
+    const el = document.createElement('div');
+    el.className = cls;
+    el.innerHTML = `${d}<div class="cal-day-dot"></div>`;
+    el.onclick = () => showCalDetail(dateStr, d);
+    grid.appendChild(el);
+  }
+}
+
+function showCalDetail(dateStr, day) {
+  selectedCalDate = dateStr;
+  renderCal();
+
+  const detail = document.getElementById('calDetail');
+  const dayComps = completions[dateStr] || [];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const [y,m,d] = dateStr.split('-');
+
+  document.getElementById('calDetailTitle').textContent =
+    `${months[parseInt(m)-1]} ${parseInt(d)}, ${y} — ${dayComps.length} puzzle${dayComps.length!==1?'s':''} completed`;
+
+  const list = document.getElementById('calDetailList');
+  if (dayComps.length === 0) {
+    list.innerHTML = '<div style="color:var(--ink3);font-family:\'Cardo\',serif;font-style:italic;font-size:0.9rem">No puzzles completed this day.</div>';
+  } else {
+    list.innerHTML = dayComps.map(id => {
+      const g = games.find(x => x.id === id);
+      if (!g) return '';
+      const colors = CAT_COLORS[g.cat] || CAT_COLORS['Custom'];
+      return `<div class="cal-detail-item">
+        <div class="cal-detail-dot" style="background:${colors.accent}"></div>
+        <span>${g.icon} ${g.name}</span>
+        <span style="margin-left:auto;font-size:0.75rem;color:var(--ink3)">${g.cat}</span>
+      </div>`;
+    }).filter(Boolean).join('');
+  }
+
+  detail.style.display = 'block';
+}
+
+// ─── SETTINGS ────────────────────────────────────────────────────────────────
+
+function toggleNotifications() {
+  if (!settings.notif) {
+    Notification.requestPermission().then(perm => {
+      if (perm === 'granted') {
+        settings.notif = true;
+        document.getElementById('notifToggle').classList.add('on');
+        save();
+        scheduleNotifications();
+        showToast('Notifications enabled ✓');
+      } else {
+        showToast('Permission denied — enable in browser settings');
+      }
+    });
+  } else {
+    settings.notif = false;
+    document.getElementById('notifToggle').classList.remove('on');
+    save();
+    showToast('Notifications disabled');
+  }
+}
+
+function toggleStreakAlert() {
+  settings.streakAlert = !settings.streakAlert;
+  document.getElementById('streakAlertToggle').classList.toggle('on', settings.streakAlert);
+  save();
+}
+
+function saveSettings() {
+  settings.morningTime = document.getElementById('morningTime').value;
+  settings.eveningTime = document.getElementById('eveningTime').value;
+  save();
+  if (settings.notif) scheduleNotifications();
+}
+
+function scheduleNotifications() {
+  // Schedule via setTimeout for same-day notifications
+  const now = new Date();
+  function scheduleAt(timeStr, msg) {
+    const [h, m] = timeStr.split(':').map(Number);
+    const target = new Date();
+    target.setHours(h, m, 0, 0);
+    const diff = target - now;
+    if (diff > 0) {
+      setTimeout(() => {
+        const todayDone = getTodayCompletions();
+        const left = games.length - todayDone.length;
+        let body = msg;
+        if (msg.includes('left') && left > 0) body = `You still have ${left} puzzle${left!==1?'s':''} left today.`;
+        if (left === 0) body = 'All done today! Amazing work. ✦';
+        new Notification("The House of Pallavi", { body, icon: './icon-192.png' });
+      }, diff);
+    }
+  }
+  scheduleAt(settings.morningTime, "Time for today's puzzles ☀️");
+  scheduleAt(settings.eveningTime, "You still have puzzles left today.");
+}
+
+function loadSettings() {
+  document.getElementById('notifToggle').classList.toggle('on', settings.notif);
+  document.getElementById('streakAlertToggle').classList.toggle('on', settings.streakAlert);
+  document.getElementById('morningTime').value = settings.morningTime || '08:00';
+  document.getElementById('eveningTime').value = settings.eveningTime || '20:00';
+}
+
+// ─── MANAGE GAMES ────────────────────────────────────────────────────────────
+
+function renderManageList() {
+  const list = document.getElementById('manageList');
+  list.innerHTML = games.map((g,i) => `
+    <div class="manage-item">
+      <div class="manage-icon">${g.icon}</div>
+      <div>
+        <div class="manage-name">${g.name}</div>
+        <div class="manage-cat">${g.cat} · ${g.time}</div>
+      </div>
+      <div class="manage-actions">
+        <button class="icon-btn" onclick="window.open('${g.url}','_blank')" title="Visit" aria-label="Visit ${g.name}">↗</button>
+        ${g.custom ? `<button class="icon-btn danger" onclick="removeGame('${g.id}')" title="Remove" aria-label="Remove ${g.name}">✕</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function addCustomGame() {
+  const name = document.getElementById('newName').value.trim();
+  const url = document.getElementById('newUrl').value.trim();
+  const cat = document.getElementById('newCat').value;
+  const time = document.getElementById('newTime').value;
+  const icon = document.getElementById('newIcon').value.trim() || '🎯';
+
+  if (!name || !url) { showToast('Name and URL are required'); return; }
+  if (!url.startsWith('http')) { showToast('Please enter a valid URL starting with http'); return; }
+
+  const id = 'custom_' + Date.now();
+  games.push({ id, name, icon, cat, time, url, custom: true });
+  save();
+  clearAddForm();
+  renderGames();
+  renderManageList();
+  showToast(`"${name}" added ✓`);
+}
+
+function removeGame(id) {
+  const g = games.find(x => x.id === id);
+  if (!g) return;
+  if (!confirm(`Remove "${g.name}"?`)) return;
+  games = games.filter(x => x.id !== id);
+  favorites.delete(id);
+  save();
+  renderGames();
+  renderManageList();
+  showToast(`"${g.name}" removed`);
+}
+
+function clearAddForm() {
+  ['newName','newUrl','newIcon'].forEach(id => document.getElementById(id).value = '');
+}
+
+// ─── RESET ───────────────────────────────────────────────────────────────────
+
+function confirmReset() {
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+function doReset() {
+  completions = {};
+  localStorage.removeItem('aa_streak_data');
+  save();
+  closeModalDirect();
+  renderGames();
+  renderStreaks();
+  renderStats();
+  renderCal();
+  showToast('All history reset');
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ─── NAV ─────────────────────────────────────────────────────────────────────
+
+function initNav() {
+  document.querySelectorAll('.nav-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      btn.classList.add('active');
+      const viewId = 'view-' + btn.dataset.view;
+      const view = document.getElementById(viewId);
+      if (view) view.classList.add('active');
+
+      if (btn.dataset.view === 'streaks') renderStreaks();
+      if (btn.dataset.view === 'stats') renderStats();
+      if (btn.dataset.view === 'calendar') { initCal(); }
+      if (btn.dataset.view === 'settings') { loadSettings(); renderManageList(); }
+    });
+  });
+}
+
+// ─── DATE HEADER ─────────────────────────────────────────────────────────────
+
+function setDateHeader() {
+  const now = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('headerDate').textContent = now.toLocaleDateString('en-GB', opts);
+}
+
+// ─── SERVICE WORKER ──────────────────────────────────────────────────────────
+
+function registerSW() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  load();
+  checkDailyReset();
+  setDateHeader();
+  initNav();
+  renderGames();
+  registerSW();
+  if (settings.notif) scheduleNotifications();
+});
+</script>
+</body>
+</html>

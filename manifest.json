@@ -1,0 +1,14 @@
+{
+  "name": "The House of Pallavi",
+"short_name": "Pallavi",
+  "description": "Your personal daily puzzle hub",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAF7F0",
+  "theme_color": "#FAF7F0",
+  "orientation": "any",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

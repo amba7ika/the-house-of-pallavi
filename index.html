@@ -887,21 +887,21 @@ function getTodayCompletions() {
 // ─── PERSISTENCE ─────────────────────────────────────────────────────────────
 
 function save() {
-  localStorage.setItem('aa_games', JSON.stringify(games));
-  localStorage.setItem('aa_completions', JSON.stringify(completions));
-  localStorage.setItem('aa_favorites', JSON.stringify([...favorites]));
-  localStorage.setItem('aa_settings', JSON.stringify(settings));
+  localStorage.setItem('pallavi_games', JSON.stringify(games));
+  localStorage.setItem('pallavi_completions', JSON.stringify(completions));
+  localStorage.setItem('pallavi_favorites', JSON.stringify([...favorites]));
+  localStorage.setItem('pallavi_settings', JSON.stringify(settings));
 }
 
 function load() {
   try {
-    const g = localStorage.getItem('aa_games');
+    const g = localStorage.getItem('pallavi_games');
     games = g ? JSON.parse(g) : [...DEFAULT_GAMES];
-    const c = localStorage.getItem('aa_completions');
+    const c = localStorage.getItem('pallavi_completions');
     completions = c ? JSON.parse(c) : {};
-    const f = localStorage.getItem('aa_favorites');
+    const f = localStorage.getItem('pallavi_favorites');
     favorites = f ? new Set(JSON.parse(f)) : new Set();
-    const s = localStorage.getItem('aa_settings');
+    const s = localStorage.getItem('pallavi_settings');
     settings = s ? JSON.parse(s) : settings;
   } catch(e) {
     games = [...DEFAULT_GAMES];
@@ -913,9 +913,9 @@ function load() {
 // ─── DAILY RESET CHECK ───────────────────────────────────────────────────────
 
 function checkDailyReset() {
-  const lastVisit = localStorage.getItem('aa_last_visit');
+  const lastVisit = localStorage.getItem('pallavi_last_visit');
   const today = todayKey();
-  localStorage.setItem('aa_last_visit', today);
+  localStorage.setItem('pallavi_last_visit', today);
   if (lastVisit && lastVisit !== today) {
     // Update streak
     updateStreak(lastVisit);
@@ -1467,8 +1467,7 @@ function closeModalDirect() {
 }
 function doReset() {
   completions = {};
-  localStorage.removeItem('aa_streak_data');
-  save();
+localStorage.removeItem('pallavi_streak_data');  save();
   closeModalDirect();
   renderGames();
   renderStreaks();
